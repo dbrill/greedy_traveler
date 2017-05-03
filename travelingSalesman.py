@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-"""
-Draw a graph with matplotlib.
-You must have matplotlib for this to work.
-"""
 import matplotlib.pyplot as plt
 import networkx as nx
 import time
@@ -110,24 +106,24 @@ def main(num_nodes, edges, weights):
 		labels = nx.get_edge_attributes(G,'weight')
 		if weights:
 			nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+	#initialize random node positions
 	for n, p in pos.iteritems():
 		G.node[n] = p
-
+	#get travel path
 	path = greedy_travelling_salesman(G.node,0)
 	path.append(path[0])
 	path_edges=zip(path, path[1:])
 	plt.title("Nearest Neighbor Traveling Salesman Implementation!")
-
 	nx.draw(G, pos, with_labels=True, k=.9)
 	plt.ion()
+	#walk travel path
 	for i in range(len(path)-1):
 		nx.draw_networkx_nodes(G,pos,nodelist=[path[i]],node_color='g')
 		nx.draw_networkx_edges(G,pos,edgelist=[path_edges[i]],edge_color='g',width=4)
 		plt.pause(1.0 / float(num_nodes))
 	nx.draw_networkx_nodes(G,pos,nodelist=[path[len(path)-1]],node_color='g')
-	#plt.tight_layout()
 	plt.show()
-
+	#make figure persisten after finishing
 	while True:
 		plt.pause(.05)
 
@@ -143,10 +139,3 @@ if(len(sys.argv) >= 3):
 	weights = True
 
 main(num_nodes, edges, weights)
-#nx.draw_networkx_labels(G,pos, )
-
-#print pos.keys()
-#print G[0]
-#nx.draw(G)
-#plt.savefig("simple_path.png") # save as png
-#plt.show() # display
